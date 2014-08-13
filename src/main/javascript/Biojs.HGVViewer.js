@@ -892,7 +892,7 @@ Biojs.HGVViewer = Biojs.extend({
             ////d3.selectAll(".overviewGroup").style("visibility", "hidden");
             ////d3.selectAll(".zoomedGroup").style("visibility", "visible");
             d3.selectAll(".zoomedGroup")
-                .attr("transform", "translate("+ -1*that._widthPerMutation*(position + width/2.0) +",0)");
+                .attr("transform", "translate("+ -1*that._widthPerMutation*(position) +",0)");
             console.log("redrawn");
             return 0;
         }
