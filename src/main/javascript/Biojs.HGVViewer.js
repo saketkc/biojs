@@ -192,22 +192,22 @@ Biojs.HGVViewer = Biojs.extend({
         //this._profiler(this._createVariantsDataAsArray);
         this._createVariantsDataAsArray();
         var endTime = this._getTime();
-        console.log("Data Array creation: " + String(endTime-startTime) + " ms");
+        Biojs.console.log("Data Array creation: " + String(endTime-startTime) + " ms");
         startTime  = this._getTime();
         this._createVariantInfoArray();
         endTime = this._getTime();
-        console.log("Variant Info Array creation: " + String(endTime-startTime) + " ms");
+        Biojs.console.log("Variant Info Array creation: " + String(endTime-startTime) + " ms");
         var maxTotalVariants = this._getMaximumByType("total");
-        console.log("Max total variants: " + maxTotalVariants);
+        Biojs.console.log("Max total variants: " + maxTotalVariants);
         this._availablePlottingHeight = this.opt.height - this.rulerMargin.top;
         this._scaleFactor = Math.floor(this._availablePlottingHeight/maxTotalVariants);
         /*Calculations for the zoomed view*/
         this.maximumFrequency = this._getMaximumByType("totalFrequency");
         this.minimumFrequency = this._getMinimumFrequency();
-        console.log("MIN freq: " + this.minimumFrequency);
+        Biojs.console.log("MIN freq: " + this.minimumFrequency);
         this.maximumZoomedHeight = this.opt.height - this.rulerMargin.top - 25;
         this.oldRange = this.maximumFrequency - this.minimumFrequency;
-        console.log("Max Freq: " + this.maximumFrequency);
+        Biojs.console.log("Max Freq: " + this.maximumFrequency);
         this.newRange = this.maximumZoomedHeight - this._minimumZoomedHeight;
     },
     _cloneSVGContents: function(sourceElementID, targetHolder){
@@ -568,7 +568,6 @@ Biojs.HGVViewer = Biojs.extend({
                 var sliderPosition = d3.select("#positionText").html();
                 that._plotZoomedOverview(sliderPosition);
                 that._plotZoomedIndividualView();
-                console.log("Zoom arrow down?: "+ that._isArrowDown)
                 if(that._isArrowDown){
                     //Hide Overview
                     d3.select("#mainSVGContents .overviewGroup").style("display", "none");
@@ -783,7 +782,7 @@ Biojs.HGVViewer = Biojs.extend({
             });
         }
         else{
-            console.log("removed")
+            Biojs.console.log("removed")
         }
         var that = this;
         for (position in this.variantDataObject){
@@ -879,7 +878,6 @@ Biojs.HGVViewer = Biojs.extend({
             d3.select(".openview").style("visibility", "hidden");
         }
         if(this._zoomedViewExists){
-            console.log("is arrow down" + that._isArrowDown)
             var width = (this.sequenceLength+2)*that._widthPerMutation;
             d3.select("#overviewSVG").attr("width", width);
             d3.selectAll(".zoomedGroup")
@@ -887,7 +885,7 @@ Biojs.HGVViewer = Biojs.extend({
             if(that._isArrowDown){
                 d3.selectAll(".individualview .zoomedGroup").style("display", "inline-block");
             }
-            console.log("redrawn");
+            Biojs.console.log("redrawn");
             return 0;
         }
         else{
@@ -903,7 +901,7 @@ Biojs.HGVViewer = Biojs.extend({
         var svg = that._zoomedView.append("g").attr("class", "zoomedVariants");
         that._variantsPlotProcessor(svg);
         endTime = this._getTime();
-        console.log("SVG drawing: " + String(endTime-startTime) + "ms");
+        Biojs.console.log("SVG drawing: " + String(endTime-startTime) + "ms");
     },
     _plotZoomedRulerLine: function(holder, isOverview){
         var svg = holder.append("g").attr("class", "zoomedRuler");
@@ -922,10 +920,10 @@ Biojs.HGVViewer = Biojs.extend({
                 .style("stroke", "black")
                 .datum(variant)
                 .on("mouseover", function(d){
-                    console.log("position: " + d.position);
+                    Biojs.console.log("position: " + d.position);
                 })
                 .on("mousemove", function(d){
-                    console.log("position: " + d.position);
+                    Biojs.console.log("position: " + d.position);
                 });
             svg.append("text")
                 .attr("x", this.rulerMargin.left + 2.5 + (i)*this._widthPerMutation)
@@ -1045,7 +1043,6 @@ Biojs.HGVViewer = Biojs.extend({
         var variants = this.variantsJsonData["variants"];
         var that = this;
         var activeScores = this._activeScores.map(function(x){ return that.opt.availableScores[x]});
-        //console.log(activeScores);
         if (activeScores.length==0){
             return 0;
         }
@@ -1098,7 +1095,7 @@ Biojs.HGVViewer = Biojs.extend({
                 }
             }
             if (prediction == null){
-                    console.log("ERROR!: prediction null, check: " + position + ", with score:  "  + averageScore + " key " + range  );
+                    Biojs.console.log("ERROR!: prediction null, check: " + position + ", with score:  "  + averageScore + " key " + range  );
             }
             var predictionKey = prediction + "TypeVariantsList";
             var variantInfo = {};
