@@ -147,9 +147,7 @@ input[type='range'] {
     cursor: pointer;
 }
 
-.overviewGroup, .zoomedGroup {
-    display: none;
-}
+
 .icon.textdesc {
     cursor: none;
     text-transform:capitalize;
