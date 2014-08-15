@@ -44,7 +44,7 @@ Biojs.HGVViewer = Biojs.extend({
     constructor: function(){
         /**
          * Constructor, initilaises the data fetching and SVG creation
-         */
+         **/
         /*Number.prototype.between = function (min, max) {
             return this >= min && this < max;
         };*/
@@ -88,8 +88,8 @@ Biojs.HGVViewer = Biojs.extend({
     consequenceTypesList : [], //A list to store the 'unique' consequencetypes as reported from the API
     _individualViewSVG: {},
     _tooltipMethod : "html", //"html"/"svg". html should be faster
-    _tooltipWidth: 150, // Maximum width of tooltip
-    _tooltipHeight: 90, // Maximum height of tooltip
+    _tooltipWidth: 150, //Maximum width of tooltip
+    _tooltipHeight: 90, //Maximum height of tooltip
     //Map to expand short names of residues
     aaResidueMap: {"A":"Ala","R":"Arg","N":"Asn","D":"Asp","C":"Cys","E":"Glu","Q":"Gln","G":"Gly",
                     "H":"His","I":"Ile","L":"Leu","K":"Lys","M":"Met","F":"Phe","P":"Pro","S":"Ser",
@@ -97,10 +97,10 @@ Biojs.HGVViewer = Biojs.extend({
     _mutationTypes: ["benign", "damaging", "mixed"],
     //NOTE: Classes exist with the same names as _mutationTypes, so for new mutations,
     //new classes should be defined in css as well
-    _scoreRanges: {"benign":[-2,0.4], "mixed":[0.4,0.6], "damaging":[0.6, 2]}, /*Range values for each
+    _scoreRanges: {"benign":[-2,0.4], "mixed":[0.4,0.6], "damaging":[0.6, 2]}, /**Range values for each
                                                                                 *consequence type,
                                                                                 *the keys name set here are
-                                                                                * used dynamically */
+                                                                                * used dynamically**/
     _shouldInvertScores: ["siftScore"], //The scores which should be read as 1-score
     _widthPerMutation: 13, //Set width for the rectangle
     _minimumZoomedHeight: 13, //Minimum height of the rectangles on zooming
@@ -184,9 +184,10 @@ Biojs.HGVViewer = Biojs.extend({
         "onError", //Not implemented
     ],
     _autoScaler: function() {
-        /* This method auto scales the this.opt.scaleFactor for
+        /** This method auto scales the this.opt.scaleFactor for
          * generating the stacks with maximum heights such that they do not override the height
-         * of the SVG */
+         * of the SVG 
+         **/
         var that = this;
         var startTime  = this._getTime();
         //this._profiler(this._createVariantsDataAsArray);
@@ -211,24 +212,27 @@ Biojs.HGVViewer = Biojs.extend({
         this.newRange = this.maximumZoomedHeight - this._minimumZoomedHeight;
     },
     _cloneSVGContents: function(sourceElementID, targetHolder){
-        /*Appends the sourceElementID to targetHolder
-         */
+        /** 
+         * Appends the sourceElementID to targetHolder
+         **/
         var copySource = targetHolder.append("use")
                                     .attr("xlink:href", sourceElementID).attr("class", "clonedRuler");
     },
     _createVariantsDataAsArray: function(){
-        /* Method to convert the variant data object into an array containing only the values
+        /**
+         *  Method to convert the variant data object into an array containing only the values
          * and no keys
-         */
+         **/
         var that = this;
         this.variantDataArray = Object.keys( that.variantDataObject ).map(function ( key ) {
             return that.variantDataObject[key];
             });
     },
     _createVariantInfoArray: function(){
-        /*Method to create an array for storing variant specific data such as the mutation,
+        /**
+         * Method to create an array for storing variant specific data such as the mutation,
          * sift/poyophen scores. These are stored as an array:
-         */
+         **/
         var that = this;
         /*this.variantInfo = [];
         that._mutationTypes.map(function(mutationType){
@@ -255,7 +259,9 @@ Biojs.HGVViewer = Biojs.extend({
         }
     },
     _getData: function(){
-        /**Method that makes a synchronous call to fetch the variants **/
+        /**
+         * Method that makes a synchronous call to fetch the variants 
+         **/
         var that = this;
         this.sequenceUrl = this.opt.baseUrl + this.opt.accession + ".json";
         this._queue = queue(1);
@@ -277,40 +283,54 @@ Biojs.HGVViewer = Biojs.extend({
         });
     },
     _getMaximumByType: function(type){
-        /**Method to return the maximum number of total mutations of the
+        /**
+         * Method to return the maximum number of total mutations of the
          * type passed as argument
-         */
+         **/
         var that = this;
         return Math.max.apply(Math, that.variantDataArray.map(function(object){return object[type];}));
     },
     _getMaximumFrequency: function(){
+        /**
+         * Method to return the maximum frequency 
+         * across all variants 
+         * across all positions
+        **/
         var that = this
         return Math.max.apply(Math, that.variantInfoFrequency)
     },
     _getMinimumFrequency: function(){
+        /**
+         * Method to return the minimum frequency 
+         * across all variants 
+         * across all positions
+         **/
         var that = this;
         return Math.min.apply(Math, that.variantInfoFrequency)
     },
     getResidueName: function(position){
-        /**Method to return a three letter residue name given a one letter input
-         * **/
+        /**
+         * Method to return a three letter residue name given a one letter input
+         **/
         var oneLettername = this.sequence[position];
         return this.aaResidueMap[oneLettername];
     },
     _getTime: function(){
-        /**Method to return current 09:57
+        /**
+         * Method to return current 09:57
          * Used in general for profile testing
          **/
         var time = new Date().getTime();
         return time;
     },
     _init: function(proteinID){
-        /*  Initialiser invoked by constructor
+        /** 
+         *  Initialiser invoked by constructor
          *  initates data parsing and SVG reation
          *  Data is synchronoulsy downloaded via d3.json
          *  SVG initialisation can happen only after, since we need the
          *  seqeunce length to init the ruler creation
-         */
+         **/
         var messageBox = d3.select("body").append("div").attr("id", "message").text("Loading...");
         var target = d3.select("#" + this.opt.target);
         var that = this;
@@ -323,7 +343,7 @@ Biojs.HGVViewer = Biojs.extend({
         this._leftPanelDiv = target.append("div")
                                     .attr("class", "leftPanel")
                                     .style("height", this.opt.height+"px");
-        // Initially all scores are active
+        //Initially all scores are active
         this._activeScores = Object.keys(that.opt.availableScores);
         this._scoreKeys = this._activeScores.map(function(key) { return that.opt.availableScores[key] });
         Biojs.console.log("Active Scores: " + this._activeScores);
@@ -336,6 +356,7 @@ Biojs.HGVViewer = Biojs.extend({
             .on("click", function(){
                 var isActive = d3.select(this).attr("class").split(" ")[2];
                 if (isActive){
+                    //When arrow is set to right
                     that._isArrowDown = false;
                     d3.select(".openview").style("visibility", "hidden");
                     if(that._isZoomActive){
@@ -350,6 +371,7 @@ Biojs.HGVViewer = Biojs.extend({
                     d3.select(this).classed("active", false);
                 }
                 else{
+                    //When arrow is set to down
                     that._isArrowDown = true;
                     d3.selectAll(".openview").style("visibility", "visible");
                     d3.select("#mainSVGContents .zoomedGroup").style("display", "none");
@@ -444,7 +466,9 @@ Biojs.HGVViewer = Biojs.extend({
         this._getData();
     },
     _initBaseLine: function(){
-        /**Method to intialise the ruler line **/
+        /**
+         * Method to intialise the ruler line 
+         **/
         var that = this;
         this._rulerScale = d3.scale
                                 .linear()
@@ -465,7 +489,9 @@ Biojs.HGVViewer = Biojs.extend({
         this._pixelperAA = this._rulerScale(2)-this._rulerScale(1);
     },
     _initSVG: function(){
-        /** Method to intilaise SVG for overview **/
+        /**
+         * Method to intilaise SVG for overview
+         **/
         var that = this;
         this.zoomBehavior = d3.behavior.zoom().scaleExtent([1, 100]).on("zoom", that._zoomHandler);
         this.mainSVGContents = this._overViewDiv
@@ -479,7 +505,9 @@ Biojs.HGVViewer = Biojs.extend({
                                     .attr("class", "overviewGroup");
     },
     _initTooltip: function(){
-        /**Method to intilaise tooltips **/
+        /**
+         * Method to intilaise tooltips 
+         **/
         var target = d3.select("#" + this.opt.target);
         this._tooltipDiv = target.append("div")
                                     .attr({
@@ -539,7 +567,6 @@ Biojs.HGVViewer = Biojs.extend({
             .html(
                 "<input type='range' id='slider' name='zoomPosition' value='1' min='1' max='"
                 + this.sequenceLength +"'>"
-                //+ this.sequenceLength
             );
         d3.select("#sliderPanel")
             .append("div")
@@ -608,14 +635,7 @@ Biojs.HGVViewer = Biojs.extend({
                     d3.select("#mainSVGContents .zoomedGroup").style("display", "none");
                 }
             }
-            if(that._isArrowDown){
-                d3.select(".openview").style("visibility", "visible");
-                d3.select("#mainSVGContents").style("visibility", "hidden");
-            }
-            else{
-                d3.select(".openview").style("visibility", "hidden");
-                d3.select("#mainSVGContents").style("visibility", "visible");
-            }
+            
         });
     },
     isBetween: function(number, min, max){
