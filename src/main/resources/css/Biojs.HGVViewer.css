@@ -72,6 +72,7 @@ input[type='range'] {
     display: block;
     visibility: hidden;
     margin-top: 100px;
+    width: 1000px;
 }
 .tooltip {
     text-transform:capitalize;
@@ -96,7 +97,7 @@ input[type='range'] {
     overflow: scroll;
 }
 .variationview{
-    display: inline-block;
+    display: block;
     float: left;
     clear: right;
 }
